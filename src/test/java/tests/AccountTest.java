@@ -1,5 +1,7 @@
 package tests;
 
+import dto.Account;
+import dto.AccountFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
 import pages.HomePage;
@@ -10,12 +12,13 @@ public class AccountTest extends BaseTest {
 
     @Test
     public void checkCreateAccount() {
+        Account account = AccountFactory.getAccount("Cold");
         loginPage.open();
         loginPage.login("tborodich@tms.sandbox", "Password002!");
         wait.until(ExpectedConditions.visibilityOfElementLocated(HomePage.getTitleXpath()));
         newAccountModal.open();
         wait.until(ExpectedConditions.visibilityOfElementLocated(NewAccountModal.getTitleXpath()));
-        newAccountModal.createAccount("TMS", "+374", "+375", "Hot");
+        newAccountModal.createAccount(account);
         newAccountModal.clickSaveButton();
         assertEquals(accountListPage.getTitle(),
                 "TMS",

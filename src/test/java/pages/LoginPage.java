@@ -3,6 +3,7 @@ package pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class LoginPage extends BasePage {
 
@@ -20,6 +21,11 @@ public class LoginPage extends BasePage {
         driver.get(BASE_URL);
     }
 
+    @Override
+    public void isPageOpened() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(LOGIN_BUTTON));
+    }
+
     @Step("Вход в систему с имненем пользователя: {user} и паролем {password}")
     public void login(String user, String password) {
         driver.findElement(USER_NAME_FIELD).sendKeys(user);
@@ -30,4 +36,5 @@ public class LoginPage extends BasePage {
     public String getErrorMessage() {
         return driver.findElement(ERROR_MESSAGE).getText();
     }
+
 }

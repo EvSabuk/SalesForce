@@ -1,5 +1,6 @@
 package pages;
 
+import dto.Account;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -84,11 +85,11 @@ public class NewAccountModal extends BasePage {
         driver.get(BASE_URL + "lightning/o/Account/new");
     }
 
-    public void createAccount(String name, String phone, String fax, String rating) {
-        fillInput(ACCOUNT_NAME, name);
-        selectPicklist(RATING, rating);
-        fillInput(PHONE, phone);
-        fillInput(FAX, fax);
+    public void createAccount(Account account) {
+        fillInput(ACCOUNT_NAME, account.getName());
+        selectPicklist(RATING, account.getRating());
+        fillInput(PHONE, account.getPhone());
+        fillInput(FAX, account.getFax());
     }
 
     public void clickSaveButton() {
