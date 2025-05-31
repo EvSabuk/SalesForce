@@ -21,8 +21,14 @@ public class LoginPageFactory extends BasePage{
     @FindBy (id = "Login")
     private WebElement loginButton;
 
-    public void open() {
+    public LoginPageFactory open() {
         driver.get("https://tms9-dev-ed.develop.lightning.force.com/");
+        return this;
+    }
+
+    @Override
+    public BasePage isPageOpened() {
+        return this;
     }
 
     public void login(String user, String password) {

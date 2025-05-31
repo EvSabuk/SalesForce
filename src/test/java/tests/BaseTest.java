@@ -9,11 +9,11 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
-import pages.AccountListPage;
-import pages.HomePage;
-import pages.LoginPage;
-import pages.NewAccountModal;
+import pages.*;
+import steps.AccountStep;
+import steps.LoginStep;
 import utils.TestListener;
+
 import java.time.Duration;
 import java.util.HashMap;
 
@@ -29,6 +29,9 @@ public class BaseTest {
     AccountListPage accountListPage;
     HomePage homePage;
     LoginPage loginPage;
+    AccountPage accountPage;
+    LoginStep loginStep;
+    AccountStep accountStep;
     String user = System.getProperty("user");
     String password = System.getProperty("password");
 
@@ -57,6 +60,9 @@ public class BaseTest {
         accountListPage = new AccountListPage(driver);
         homePage = new HomePage(driver);
         loginPage = new LoginPage(driver);
+        accountPage = new AccountPage(driver);
+        accountStep = new AccountStep(driver);
+        loginStep = new LoginStep(driver);
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         return driver;
     }

@@ -17,7 +17,9 @@ public class LoginStep {
     }
 
     public void auth(String user, String password) {
-        loginPage.open();
-        loginPage.login();
+        loginPage.open()
+                .isPageOpened()
+                .login(user, password)
+                .isPageOpened();
     }
 }
