@@ -2,12 +2,12 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class AccountListPage extends BasePage {
 
-    private static final By TITLE = By.xpath(
-            "//lightning-formatted-text[@slot='primaryField']");
+    private static final By NEW_BUTTON = By.cssSelector("[title=New]");
 
     public AccountListPage(WebDriver driver) {
         super(driver);
@@ -15,22 +15,19 @@ public class AccountListPage extends BasePage {
 
     @Override
     public AccountListPage open() {
-        driver.get("https://tms9-dev-ed.develop.lightning.force.com/lightning/o/Account");
+        driver.get(BASE_URL + "lightning/o/Account/list?filterName=MyAccounts");
         return this;
     }
 
     @Override
     public AccountListPage isPageOpened() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("[title=New]")));
+        WebElement saveButton = wait.until(ExpectedConditions.visibilityOfElementLocated(NEW_BUTTON));
+        wait.until(ExpectedConditions.elementToBeClickable(saveButton));
         return this;
     }
 
     public NewAccountModal clickNew() {
-        driver.findElement(By.cssSelector("[title=New]")).click();
-        return new NewAccountModal(driver);
-    }
-
-    public String getTitle() {
-        return driver.findElement(TITLE).getText();
+        driver.findElement(NEW_BUTTON).click();
+        return new NewAccountModal(driver).isPageOpened();
     }
 }
