@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import wrappers.Checkbox;
 import wrappers.Input;
 import wrappers.Picklist;
@@ -16,7 +17,8 @@ public class NewAccountModal extends BasePage {
 
     private static final By TITLE = By.xpath("//h2[text()='New Account']"),
             SIMILAR_RECORDS_EXIST_CLOSE = By.xpath("//button[@title='Close error dialog']"),
-            SAVE_BUTTON = By.xpath("//*[@name='SaveEdit']");
+            SAVE_BUTTON = By.xpath("//*[@name='SaveEdit']"),
+            SCROLL_FORM = By.cssSelector(".actionBody");
     private static final String ACCOUNT_NAME = "Account Name",
             RATING = "Rating",
             PHONE = "Phone",
@@ -81,19 +83,33 @@ public class NewAccountModal extends BasePage {
         new Picklist(driver, label).select(value);
     }
 
-    public void open() {
+    @Override
+    public NewAccountModal open() {
         driver.get(BASE_URL + "lightning/o/Account/new");
+        return this;
     }
 
-    public void createAccount(Account account) {
+    @Override
+    public NewAccountModal isPageOpened() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".actionBody")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='New Account']")));
+        wait.until(ExpectedConditions.elementToBeClickable(SAVE_BUTTON));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(SAVE_BUTTON));
+
+        return this;
+    }
+
+    public NewAccountModal createAccount(Account account) {
         fillInput(ACCOUNT_NAME, account.getName());
         selectPicklist(RATING, account.getRating());
         fillInput(PHONE, account.getPhone());
         fillInput(FAX, account.getFax());
+        return this;
     }
 
-    public void clickSaveButton() {
+    public AccountPage clickSaveButton() {
         driver.findElement(SAVE_BUTTON).click();
+        return new AccountPage(driver);
     }
 
     public static By getTitleXpath() {
@@ -102,20 +118,20 @@ public class NewAccountModal extends BasePage {
 
     public void scrollPage() {
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        WebElement scrollContainer = driver.findElement(By.cssSelector(".actionBody"));
+        WebElement scrollContainer = driver.findElement(SCROLL_FORM);
         js.executeScript("arguments[0].scrollTop = arguments[0].scrollTop +200;", scrollContainer);
     }
 
-    public void createAccountFull(String name, String phone, String fax, String rating,
-                                  String account_number, String website, String account_site, String ticker_symbol,
-                                  String type, String ownership, String industry, String employees,
-                                  String annual_revenue, String sic_code, String vip_client, String techmeskills,
-                                  String billing_street, String billing_city, String billing_state_province,
-                                  String billing_zip_postal_code, String billing_country, String shipping_street,
-                                  String shipping_city, String shipping_state_province, String shipping_zip_postal_code,
-                                  String shipping_country, String customer_priority, String sla,
-                                  String sla_expiration_date, String sla_serial_number, String number_of_location,
-                                  String upsell_opportunity, String active, String description) {
+    public NewAccountModal createAccountFull(String name, String phone, String fax, String rating,
+                                             String account_number, String website, String account_site, String ticker_symbol,
+                                             String type, String ownership, String industry, String employees,
+                                             String annual_revenue, String sic_code, String vip_client, String techmeskills,
+                                             String billing_street, String billing_city, String billing_state_province,
+                                             String billing_zip_postal_code, String billing_country, String shipping_street,
+                                             String shipping_city, String shipping_state_province, String shipping_zip_postal_code,
+                                             String shipping_country, String customer_priority, String sla,
+                                             String sla_expiration_date, String sla_serial_number, String number_of_location,
+                                             String upsell_opportunity, String active, String description) {
         fillInput(ACCOUNT_NAME, name);
         selectPicklist(RATING, rating);
         fillInput(PHONE, phone);
@@ -158,5 +174,6 @@ public class NewAccountModal extends BasePage {
         selectPicklist(UPSELL_OPPORTUNITY, upsell_opportunity);
         selectPicklist(ACTIVE, active);
         fillTestArea(DESCRIPTION, description);
+        return this;
     }
 }
