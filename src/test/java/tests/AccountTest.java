@@ -15,9 +15,9 @@ public class AccountTest extends BaseTest {
         Account account = AccountFactory.getAccount("Cold");
         loginPage.open();
         loginPage.login("tborodich@tms.sandbox", "Password002!");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(HomePage.getTitleXpath()));
+        homePage.isPageOpened();
         newAccountModal.open();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(NewAccountModal.getTitleXpath()));
+        newAccountModal.isPageOpened();
         newAccountModal.createAccount(account);
         newAccountModal.clickSaveButton();
         assertEquals(accountPage.getTitle(),
@@ -29,9 +29,9 @@ public class AccountTest extends BaseTest {
     public void checkCreateAccountFull() {
         loginPage.open();
         loginPage.login("tborodich@tms.sandbox", "Password002!");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(HomePage.getTitleXpath()));
+        homePage.isPageOpened();
         newAccountModal.open();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(NewAccountModal.getTitleXpath()));
+        newAccountModal.isPageOpened();
         newAccountModal.createAccountFull("TMS", "+375445445", "+3754454450", "Hot",
                 "3312", "www.site.com", "www.myaccount.com", "AAPL",
                 "Prospect", "Private", "Banking", "420", "3123123123",
