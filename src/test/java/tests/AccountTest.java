@@ -2,10 +2,8 @@ package tests;
 
 import dto.Account;
 import dto.AccountFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.annotations.Test;
-import pages.HomePage;
-import pages.NewAccountModal;
+
 import static org.testng.Assert.assertEquals;
 
 public class AccountTest extends BaseTest {

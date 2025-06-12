@@ -1,8 +1,10 @@
 package wrappers;
 
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+@Log4j2
 public class Picklist {
 
     WebDriver driver;
@@ -15,6 +17,7 @@ public class Picklist {
     }
 
     public void select(String option) {
+        log.info("Selecting '{}' inside picklist '{}'", option,label);
         driver.findElement(By.xpath(
                 String.format(selectPattern + "button", label))).click();
         driver.findElement(By.xpath(String.format(

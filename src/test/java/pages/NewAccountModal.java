@@ -1,11 +1,10 @@
 package pages;
 
 import dto.Account;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import lombok.extern.log4j.Log4j2;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 import wrappers.Checkbox;
 import wrappers.Input;
 import wrappers.Picklist;
@@ -13,6 +12,7 @@ import wrappers.Textarea;
 
 import java.util.List;
 
+@Log4j2
 public class NewAccountModal extends BasePage {
 
     private static final By TITLE = By.xpath("//h2[text()='New Account']"),
@@ -85,21 +85,24 @@ public class NewAccountModal extends BasePage {
 
     @Override
     public NewAccountModal open() {
+        log.info("Opening 'New Account Modal' page");
         driver.get(BASE_URL + "lightning/o/Account/new");
         return this;
     }
 
     @Override
     public NewAccountModal isPageOpened() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".actionBody")));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[text()='New Account']")));
-        wait.until(ExpectedConditions.elementToBeClickable(SAVE_BUTTON));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(SAVE_BUTTON));
-
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(SAVE_BUTTON));
+        } catch (TimeoutException e) {
+            log.error(e.getMessage());
+            Assert.fail("The 'New account modal' page is not opened");
+        }
         return this;
     }
 
     public NewAccountModal createAccount(Account account) {
+        log.info("Creating account '{}'", account.getName());
         fillInput(ACCOUNT_NAME, account.getName());
         selectPicklist(RATING, account.getRating());
         fillInput(PHONE, account.getPhone());
@@ -108,15 +111,18 @@ public class NewAccountModal extends BasePage {
     }
 
     public AccountPage clickSaveButton() {
+        log.info("Click on the 'Save' button on the 'New account modal' page");
         driver.findElement(SAVE_BUTTON).click();
         return new AccountPage(driver);
     }
 
     public static By getTitleXpath() {
+        log.info("Get xpath for the title for 'New account modal' page");
         return TITLE;
     }
 
     public void scrollPage() {
+        log.info("Scrolling 'New account modal' page");
         JavascriptExecutor js = (JavascriptExecutor) driver;
         WebElement scrollContainer = driver.findElement(SCROLL_FORM);
         js.executeScript("arguments[0].scrollTop = arguments[0].scrollTop +200;", scrollContainer);
@@ -132,6 +138,7 @@ public class NewAccountModal extends BasePage {
                                              String shipping_country, String customer_priority, String sla,
                                              String sla_expiration_date, String sla_serial_number, String number_of_location,
                                              String upsell_opportunity, String active, String description) {
+        log.info("Creating an account {}", name);
         fillInput(ACCOUNT_NAME, name);
         selectPicklist(RATING, rating);
         fillInput(PHONE, phone);
