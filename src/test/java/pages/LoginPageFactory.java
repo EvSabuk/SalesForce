@@ -5,20 +5,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LoginPageFactory extends BasePage{
+public class LoginPageFactory extends BasePage {
 
     public LoginPageFactory(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
 
-    @FindBy (id = "username")
+    @FindBy(id = "username")
     private WebElement userNameField;
 
-    @FindBy (id = "password")
+    @FindBy(id = "password")
     private WebElement passwordField;
 
-    @FindBy (id = "Login")
+    @FindBy(id = "Login")
     private WebElement loginButton;
 
     public LoginPageFactory open() {
